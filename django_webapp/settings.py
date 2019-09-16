@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'blog.apps.BlogConfig',
+    'plant.apps.PlantConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -128,5 +129,14 @@ MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'blog-home'
-
 LOGIN_URL = 'login'
+
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'stenerson.b@gmail.com'
+EMAIL_HOST_PASSWORD = 'ntvkgddklmwbyiil'

@@ -6,23 +6,21 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
 
 	{% if title %}
-		<title>Django Blog - {{ title }}</title>
+		<title>The Plant Wiki - {{ title }}</title>
 	{% else %}
-		<title>Django Blog</title>
+		<title>The Plant Wiki</title>
 	{% endif %}
 </head>
 <body>
 	<header class="site-header">
 	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
 	    <div class="container">
-	      <a class="navbar-brand mr-4" href="/">Django Blog</a>
+	      <a class="navbar-brand mr-4" href="/">plants.wiki</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 	      <span class="navbar-toggler-icon"></span>
 	      </button>
 	      <div class="collapse navbar-collapse" id="navbarToggle">
 	        <div class="navbar-nav mr-auto">
-	          <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
-	          <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
 	        </div>
 	        <!-- Navbar Right Side -->
 	        <div class="navbar-nav">
@@ -57,8 +55,9 @@
 		          <ul class="list-group">
 		          	{% if user.is_authenticated %}
 		            	<li class="list-group-item list-group-item-light"><a href="{% url 'post-create' %}">Create Post</a></li>
+		            	<li class="list-group-item list-grou-item-light"><a href="{% url 'plant-create' %}">Add New Plant</a></li>
 		            {% else %}
-		            	<li class="list-group-item list-group-item-light">Register</li>
+		            	<li class="list-group-item list-group-item-light"><a href="{% url 'register' %}">Register</a></li>
 		            {% endif %}
 		          </ul>
 		        </p>
