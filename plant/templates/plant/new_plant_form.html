@@ -1,0 +1,28 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+<form id="plant_form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Add a plant</legend>
+        {% for hidden in plantForm.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+
+        {% for field in plantForm %}
+            {{ field.label }}: <br />{{ field }} <br />
+        {% endfor %}
+
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form|crispy }}
+        {% endfor %}
+    </fieldset>
+    <fieldset class="form-group">
+        <input class="btn btn-outline-info" type="submit" name="submit" value="Submit" />
+    </fieldset>
+</form>
+</div>
+{% endblock content %}
