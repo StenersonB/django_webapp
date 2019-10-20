@@ -1,36 +1,70 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
-	{% for post in posts %}
-		<article class="media content-section">
-			<img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">	
-		  <div class="media-body">
-		    <div class="article-metadata">
-		      <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-		      <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-		    </div>
-		    <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-		    <p class="article-content">{{ post.content }}</p>
-		  </div>
-		</article>
-	{% endfor %}
-	{% if is_paginated %}
-		{% if page_obj.has_previous %}
-			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-		{% endif %}
-
-		{% for num in page_obj.paginator.page_range %}
-			{% if page_obj.number == num %}
-				<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-			{% elif num > page_obj.number|add:'-3' %}	
-				{% if num < page_obj.number|add:'3' %}
-					<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+	<div class="row">
+		<div class="col-md-12">
+	      <div class="content-section">
+	      		{% if user.is_authenticated %}
+		        <h4>What would you like to do?</h4>
+		        <hr />
+		        	<div class="row">
+		        		<img class="rounded-circle" style="margin-left:3%;" width="15%" src="/media/placeholder.jpg">
+		        		<img class="rounded-circle" style="margin-left:3%;" width="15%" src="/media/placeholder.jpg">
+		        		<img class="rounded-circle" style="margin-left:3%;" width="15%" src="/media/placeholder.jpg">
+		        		<img class="rounded-circle" style="margin-left:3%;" width="15%" src="/media/placeholder.jpg">
+		        		<img class="rounded-circle" style="margin-left:3%;" width="15%" src="/media/placeholder.jpg">
+		        	</div>
+	            {% else %}
+	            <h4>Would you like to create an account?</h4>
+					<a href="{% url 'register' %}">Register</a>
+	            {% endif %}
+	      </div>
+	    </div>	
+	</div>
+	<div class="row">
+		<div class="col-md-9">
+		<h3>Recent Posts</h3>
+		<hr />
+			<div class="row">
+			{% for post in posts %}
+				<div class="col-md-3">
+				{% if post.post_type == "Identify my plant" %}
+				<article class="content-section identify">
+					<div class="media-heading">
+				{% elif post.post_type == "Rescue my plant" %}
+				<article class="content-section rescue">
+					<div class="media-heading">
+				{% elif post.post_type == "General Question" %}
+				<article class="content-section general">
+					<div class="media-heading">
 				{% endif %}
-			{% endif %}
+							<small class="font-weight-bold text-center">{{ post.post_type }}</small>
+							<div class="article-metadata row ml-1 mr-1">
+							</div>
+					</div>
+					<div class="row">	
+						<p class="font-weight-normal">{{ post.title }}</p>
+					</div>
+					<div class="row">
+						<a href="{% url 'post-detail' post.id %}">
+							<img class="img-thumbnail" src="media/{{ post.get_first_image }}">
+						</a>
+					</div>
+				</article>
+				</div>
+			{% endfor %}
+			</div>
+	</div>
+	<div class="col-md-3">
+		<h3>List of plants</h3>
+		<hr />
+		<article class="content-section">
+			<ul>
+		{% for plant in plants %}
+			<li><a href="{% url 'plant-detail' plant.id %}">{{ plant.common_name }}</a></li>
 		{% endfor %}
-
-		{% if page_obj.has_next %}
-			<a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-		{% endif %}
-	{% endif %}
+			</ul>
+		</article>
+	</div>
+</div>
 {% endblock content %}
