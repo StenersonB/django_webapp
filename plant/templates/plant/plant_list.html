@@ -1,6 +1,10 @@
 {% extends "blog/base.html" %}
 {% block content %}
+<h2>List of plants</h2>
+<hr />
 <div class="content-section">
-	This is where the list of plants should be.
+	{% for plant in plants %}
+	<a href="{% url 'plant-detail' plant.id %}"><p>{{ plant.common_name }}</p></a>
+	{% endfor %}
 </div>
 {% endblock content %}

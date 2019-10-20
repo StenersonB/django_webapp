@@ -9,6 +9,7 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .forms import ImageForm, PostCreationForm
 from .models import Post
 from .models import Image
+from plant.models import Plant
 
 def home(request):
 	context = {
@@ -20,7 +21,12 @@ class PostListView(ListView):
 	model = Post
 	template_name = 'blog/home.html' # <app>/<model>_<viewtype>.html
 	context_object_name = 'posts'
-	paginate_by = 5
+	ordering = ['-date_posted']
+
+	def get_context_data(self, **kwargs):
+		context = super(PostListView, self).get_context_data(**kwargs)
+		context['plants'] = Plant.objects.all()
+		return context
 
 class UserPostListView(ListView):
 	model = Post
@@ -35,6 +41,13 @@ class UserPostListView(ListView):
 
 class PostDetailView(DetailView):
 	model = Post
+
+	def get_context_data(self, **kwargs):
+		pk = self.kwargs['pk']
+		currentPost = get_object_or_404(Post, id=pk)
+		context = super(PostDetailView, self).get_context_data(**kwargs)
+		context['images'] = Image.objects.filter(post=currentPost)
+		return context
 
 @login_required
 def PostCreateView(request):
@@ -64,23 +77,10 @@ def PostCreateView(request):
 		formset = ImageFormSet(queryset=Image.objects.none())
 	return render(request, 'blog/post_form.html', {'postForm': postForm, 'formset': formset})
 
-# class PostCreateView(LoginRequiredMixin, CreateView):
-# 	model = Post
-# 	fields = ['title', 'post_type', 'content']
-
-# 	def form_valid(self, form):
-# 		form.instance.author = self.request.user
-# 		return super().form_valid(form)
-
-# 	def test_func(self):
-# 		post = self.get_object()
-# 		if self.request.user == post.author:
-# 			return True
-# 		return False
-
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Post
 	fields = ['title', 'content']
+	template_name_suffix = '_update_form'
 
 	def form_valid(self, form):
 		form.instance.author = self.request.user

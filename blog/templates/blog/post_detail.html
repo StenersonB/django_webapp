@@ -18,4 +18,13 @@
 	    <p class="article-content">{{ object.content }}</p>
 	  </div>
 	</article>
+	<article class="media content-section">
+		<div class="col-md-12">
+	  		<h2>Attached Photos</h2>
+	  		<hr />
+	  		{% for image in images %}
+	  			<img class="img-thumbnail" src="/media/{{ image.image }}" width=24% height=24%>
+	  		{% endfor %}
+	  	</div>
+	</article>
 {% endblock content %}
